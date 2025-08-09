@@ -1,0 +1,2 @@
+pkg install -forge glpk
+

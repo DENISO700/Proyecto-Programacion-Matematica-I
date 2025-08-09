@@ -1,0 +1,1017 @@
+GAMS 50.1.0  12b75dde Jun 18, 2025          WEX-WEI x86 64bit/MS Windows - 08/07/25 23:06:23 Page 1
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+C o m p i l a t i o n
+
+
+   1  Set
+   2      p /carlos, ana, luis, sofia, denis/
+   3      t /t1*t12/
+   4      w /1,2,3,5,8,13/;
+   5   
+   6  Binary Variable
+   7      x(p,t)
+   8      y(t,w);
+   9   
+  10  Positive Variable
+  11      carga(p)
+  12      pt(t)
+  13      z(p,t);
+  14   
+  15  Variable
+  16      obj;
+  17   
+  18  Parameter
+  19      esSenior(p) /carlos 1, ana 0, luis 0, sofia 1, denis 1/
+  20      M /20/;
+  21   
+  22  Equation
+  23      objetivo
+  24      unaPersonaPorTarea(t)
+  25      cargaPersona(p)
+  26      cargaMinima(p)
+  27      cargaMinEquipo
+  28      cargaMaxEquipo
+  29      tareaUnPeso(t)
+  30      definicionPesoTarea(t)
+  31      z_def1(p,t)
+  32      z_def2(p,t)
+  33      z_def3(p,t);
+  34   
+  35  Parameter ptw(w);
+  36  ptw('1')=1; ptw('2')=2; ptw('3')=3; ptw('5')=5; ptw('8')=8; ptw('13')=13;
+  37   
+  38  Scalar cargaMinTotal /87/;
+  39  Scalar cargaMaxTotal /104.4/;
+  40   
+  41  tareaUnPeso(t)..
+  42      sum(w, y(t,w)) =e= 1;
+  43   
+  44  definicionPesoTarea(t)..
+  45      pt(t) =e= sum(w, ptw(w) * y(t,w));
+  46   
+  47  objetivo..
+  48      obj =e= sum((p,t), z(p,t));
+  49   
+  50  unaPersonaPorTarea(t)..
+  51      sum(p, x(p,t)) =e= 1;
+  52   
+  53  cargaPersona(p)..
+  54      carga(p) =e= sum(t, z(p,t));
+  55   
+  56  cargaMinima(p)..
+  57      carga(p) =g= 18 * esSenior(p) + 13 * (1 - esSenior(p));
+  58   
+  59  cargaMinEquipo..
+  60      sum(t, pt(t)) =g= cargaMinTotal;
+  61   
+  62  cargaMaxEquipo..
+  63      sum(t, pt(t)) =l= cargaMaxTotal;
+  64   
+  65  z_def1(p,t)..
+  66      z(p,t) =l= pt(t);
+  67   
+  68  z_def2(p,t)..
+  69      z(p,t) =l= M * x(p,t);
+  70   
+  71  z_def3(p,t)..
+  72      z(p,t) =g= pt(t) - M * (1 - x(p,t));
+  73   
+  74  Model asignacionScrum /objetivo, unaPersonaPorTarea, cargaPersona, cargaMinima, cargaMinEquipo, cargaMaxEquipo, tareaUnPeso, definicionPesoTarea, z_def1, z_def2, z_def3/;
+  75   
+  76  Solve asignacionScrum using mip maximizing obj;
+  77   
+  78  Display x.l, y.l, carga.l, pt.l, z.l, obj.l;
+  79   
+  80  file tabla /'distribucion.txt'/;
+  81  put tabla;
+  82  put 'Distribución de tareas por persona:' /;
+  83  put 'Persona':12, 'Tarea':8, 'Peso':6, 'Asignado':10 /;
+  84  loop((p,t),
+  85      if(x.l(p,t) = 1,
+  86          loop(w,
+  87              if(y.l(t,w) = 1,
+  88                  put p.tl:12, t.tl:8, w.tl:6:0, 'Sí':10 /;
+  89              );
+  90          );
+  91      );
+  92  );
+  93   
+  94  put / 'Carga total por persona:' /;
+  95  loop(p,
+  96      put p.tl:12, carga.l(p):8:2 /;
+  97  );
+  98   
+
+
+COMPILATION TIME     =        0.000 SECONDS      3 MB  50.1.0 12b75dde WEX-WEI
+GAMS 50.1.0  12b75dde Jun 18, 2025          WEX-WEI x86 64bit/MS Windows - 08/07/25 23:06:23 Page 2
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Equation Listing    SOLVE asignacionScrum Using MIP From line 76
+
+
+---- objetivo  =E=  
+
+objetivo..  - z(carlos,t1) - z(carlos,t2) - z(carlos,t3) - z(carlos,t4) - z(carlos,t5) - z(carlos,t6) - z(carlos,t7) - z(carlos,t8) - z(carlos,t9) - z(carlos,t10) - z(carlos,t11) - z(carlos,t12) - z(ana,t1) - z(ana,t2) - z(ana,t3) - z(ana,t4) - z(ana,t5) - z(ana,t6) - z(ana,t7) - z(ana,t8) - z(ana,t9) - z(ana,t10) - z(ana,t11) - z(ana,t12) - z(luis,t1) - z(luis,t2) - z(luis,t3) - z(luis,t4) - z(luis,t5) - z(luis,t6) - z(luis,t7) - z(luis,t8) - z(luis,t9) - z(luis,t10) - z(luis,t11) - z(luis,t12) - z(sofia,t1) - z(sofia,t2) - z(sofia,t3) - z(sofia,t4) - z(sofia,t5) - z(sofia,t6) - z(sofia,t7) - z(sofia,t8) - z(sofia,t9) - z(sofia,t10) - z(sofia,t11) - z(sofia,t12) - z(denis,t1) - z(denis,t2) - z(denis,t3) - z(denis,t4) - z(denis,t5) - z(denis,t6) - z(denis,t7) - z(denis,t8) - z(denis,t9) - z(denis,t10) - z(denis,t11) - z(denis,t12) + obj =E= 0 ; (LHS = 0)
+     
+
+---- unaPersonaPorTarea  =E=  
+
+unaPersonaPorTarea(t1)..  x(carlos,t1) + x(ana,t1) + x(luis,t1) + x(sofia,t1) + x(denis,t1) =E= 1 ; (LHS = 0, INFES = 1 ****)
+     
+unaPersonaPorTarea(t2)..  x(carlos,t2) + x(ana,t2) + x(luis,t2) + x(sofia,t2) + x(denis,t2) =E= 1 ; (LHS = 0, INFES = 1 ****)
+     
+unaPersonaPorTarea(t3)..  x(carlos,t3) + x(ana,t3) + x(luis,t3) + x(sofia,t3) + x(denis,t3) =E= 1 ; (LHS = 0, INFES = 1 ****)
+     
+REMAINING 9 ENTRIES SKIPPED
+
+
+---- cargaPersona  =E=  
+
+cargaPersona(carlos)..  carga(carlos) - z(carlos,t1) - z(carlos,t2) - z(carlos,t3) - z(carlos,t4) - z(carlos,t5) - z(carlos,t6) - z(carlos,t7) - z(carlos,t8) - z(carlos,t9) - z(carlos,t10) - z(carlos,t11) - z(carlos,t12) =E= 0 ; (LHS = 0)
+     
+cargaPersona(ana)..  carga(ana) - z(ana,t1) - z(ana,t2) - z(ana,t3) - z(ana,t4) - z(ana,t5) - z(ana,t6) - z(ana,t7) - z(ana,t8) - z(ana,t9) - z(ana,t10) - z(ana,t11) - z(ana,t12) =E= 0 ; (LHS = 0)
+     
+cargaPersona(luis)..  carga(luis) - z(luis,t1) - z(luis,t2) - z(luis,t3) - z(luis,t4) - z(luis,t5) - z(luis,t6) - z(luis,t7) - z(luis,t8) - z(luis,t9) - z(luis,t10) - z(luis,t11) - z(luis,t12) =E= 0 ; (LHS = 0)
+     
+REMAINING 2 ENTRIES SKIPPED
+
+
+---- cargaMinima  =G=  
+
+cargaMinima(carlos)..  carga(carlos) =G= 18 ; (LHS = 0, INFES = 18 ****)
+     
+cargaMinima(ana)..  carga(ana) =G= 13 ; (LHS = 0, INFES = 13 ****)
+     
+cargaMinima(luis)..  carga(luis) =G= 13 ; (LHS = 0, INFES = 13 ****)
+     
+REMAINING 2 ENTRIES SKIPPED
+
+
+---- cargaMinEquipo  =G=  
+
+cargaMinEquipo..  pt(t1) + pt(t2) + pt(t3) + pt(t4) + pt(t5) + pt(t6) + pt(t7) + pt(t8) + pt(t9) + pt(t10) + pt(t11) + pt(t12) =G= 87 ; (LHS = 0, INFES = 87 ****)
+     
+
+---- cargaMaxEquipo  =L=  
+
+cargaMaxEquipo..  pt(t1) + pt(t2) + pt(t3) + pt(t4) + pt(t5) + pt(t6) + pt(t7) + pt(t8) + pt(t9) + pt(t10) + pt(t11) + pt(t12) =L= 104.4 ; (LHS = 0)
+     
+
+---- tareaUnPeso  =E=  
+
+tareaUnPeso(t1)..  y(t1,1) + y(t1,2) + y(t1,3) + y(t1,5) + y(t1,8) + y(t1,13) =E= 1 ; (LHS = 0, INFES = 1 ****)
+     
+tareaUnPeso(t2)..  y(t2,1) + y(t2,2) + y(t2,3) + y(t2,5) + y(t2,8) + y(t2,13) =E= 1 ; (LHS = 0, INFES = 1 ****)
+     
+tareaUnPeso(t3)..  y(t3,1) + y(t3,2) + y(t3,3) + y(t3,5) + y(t3,8) + y(t3,13) =E= 1 ; (LHS = 0, INFES = 1 ****)
+     
+REMAINING 9 ENTRIES SKIPPED
+
+
+---- definicionPesoTarea  =E=  
+
+definicionPesoTarea(t1)..  - y(t1,1) - 2*y(t1,2) - 3*y(t1,3) - 5*y(t1,5) - 8*y(t1,8) - 13*y(t1,13) + pt(t1) =E= 0 ; (LHS = 0)
+     
+definicionPesoTarea(t2)..  - y(t2,1) - 2*y(t2,2) - 3*y(t2,3) - 5*y(t2,5) - 8*y(t2,8) - 13*y(t2,13) + pt(t2) =E= 0 ; (LHS = 0)
+     
+definicionPesoTarea(t3)..  - y(t3,1) - 2*y(t3,2) - 3*y(t3,3) - 5*y(t3,5) - 8*y(t3,8) - 13*y(t3,13) + pt(t3) =E= 0 ; (LHS = 0)
+     
+REMAINING 9 ENTRIES SKIPPED
+
+
+---- z_def1  =L=  
+
+z_def1(carlos,t1)..  - pt(t1) + z(carlos,t1) =L= 0 ; (LHS = 0)
+     
+z_def1(carlos,t2)..  - pt(t2) + z(carlos,t2) =L= 0 ; (LHS = 0)
+     
+z_def1(carlos,t3)..  - pt(t3) + z(carlos,t3) =L= 0 ; (LHS = 0)
+     
+REMAINING 57 ENTRIES SKIPPED
+
+
+---- z_def2  =L=  
+
+z_def2(carlos,t1)..  - 20*x(carlos,t1) + z(carlos,t1) =L= 0 ; (LHS = 0)
+     
+z_def2(carlos,t2)..  - 20*x(carlos,t2) + z(carlos,t2) =L= 0 ; (LHS = 0)
+     
+z_def2(carlos,t3)..  - 20*x(carlos,t3) + z(carlos,t3) =L= 0 ; (LHS = 0)
+     
+REMAINING 57 ENTRIES SKIPPED
+
+
+---- z_def3  =G=  
+
+z_def3(carlos,t1)..  - 20*x(carlos,t1) - pt(t1) + z(carlos,t1) =G= -20 ; (LHS = 0)
+     
+z_def3(carlos,t2)..  - 20*x(carlos,t2) - pt(t2) + z(carlos,t2) =G= -20 ; (LHS = 0)
+     
+z_def3(carlos,t3)..  - 20*x(carlos,t3) - pt(t3) + z(carlos,t3) =G= -20 ; (LHS = 0)
+     
+REMAINING 57 ENTRIES SKIPPED
+
+GAMS 50.1.0  12b75dde Jun 18, 2025          WEX-WEI x86 64bit/MS Windows - 08/07/25 23:06:23 Page 3
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Column Listing      SOLVE asignacionScrum Using MIP From line 76
+
+
+---- x  
+
+x(carlos,t1)
+                (.LO, .L, .UP, .M = 0, 0, 1, 0)
+        1       unaPersonaPorTarea(t1)
+      -20       z_def2(carlos,t1)
+      -20       z_def3(carlos,t1)
+
+x(carlos,t2)
+                (.LO, .L, .UP, .M = 0, 0, 1, 0)
+        1       unaPersonaPorTarea(t2)
+      -20       z_def2(carlos,t2)
+      -20       z_def3(carlos,t2)
+
+x(carlos,t3)
+                (.LO, .L, .UP, .M = 0, 0, 1, 0)
+        1       unaPersonaPorTarea(t3)
+      -20       z_def2(carlos,t3)
+      -20       z_def3(carlos,t3)
+
+REMAINING 57 ENTRIES SKIPPED
+
+---- y  
+
+y(t1,1)
+                (.LO, .L, .UP, .M = 0, 0, 1, 0)
+        1       tareaUnPeso(t1)
+       -1       definicionPesoTarea(t1)
+
+y(t1,2)
+                (.LO, .L, .UP, .M = 0, 0, 1, 0)
+        1       tareaUnPeso(t1)
+       -2       definicionPesoTarea(t1)
+
+y(t1,3)
+                (.LO, .L, .UP, .M = 0, 0, 1, 0)
+        1       tareaUnPeso(t1)
+       -3       definicionPesoTarea(t1)
+
+REMAINING 69 ENTRIES SKIPPED
+
+---- carga  
+
+carga(carlos)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+        1       cargaPersona(carlos)
+        1       cargaMinima(carlos)
+
+carga(ana)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+        1       cargaPersona(ana)
+        1       cargaMinima(ana)
+
+carga(luis)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+        1       cargaPersona(luis)
+        1       cargaMinima(luis)
+
+REMAINING 2 ENTRIES SKIPPED
+
+---- pt  
+
+pt(t1)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+        1       cargaMinEquipo
+        1       cargaMaxEquipo
+        1       definicionPesoTarea(t1)
+       -1       z_def1(carlos,t1)
+       -1       z_def1(ana,t1)
+       -1       z_def1(luis,t1)
+       -1       z_def1(sofia,t1)
+       -1       z_def1(denis,t1)
+       -1       z_def3(carlos,t1)
+       -1       z_def3(ana,t1)
+       -1       z_def3(luis,t1)
+       -1       z_def3(sofia,t1)
+       -1       z_def3(denis,t1)
+
+pt(t2)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+        1       cargaMinEquipo
+        1       cargaMaxEquipo
+        1       definicionPesoTarea(t2)
+       -1       z_def1(carlos,t2)
+       -1       z_def1(ana,t2)
+       -1       z_def1(luis,t2)
+       -1       z_def1(sofia,t2)
+       -1       z_def1(denis,t2)
+       -1       z_def3(carlos,t2)
+       -1       z_def3(ana,t2)
+       -1       z_def3(luis,t2)
+       -1       z_def3(sofia,t2)
+       -1       z_def3(denis,t2)
+
+pt(t3)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+        1       cargaMinEquipo
+        1       cargaMaxEquipo
+        1       definicionPesoTarea(t3)
+       -1       z_def1(carlos,t3)
+       -1       z_def1(ana,t3)
+       -1       z_def1(luis,t3)
+       -1       z_def1(sofia,t3)
+       -1       z_def1(denis,t3)
+       -1       z_def3(carlos,t3)
+       -1       z_def3(ana,t3)
+       -1       z_def3(luis,t3)
+       -1       z_def3(sofia,t3)
+       -1       z_def3(denis,t3)
+
+REMAINING 9 ENTRIES SKIPPED
+
+---- z  
+
+z(carlos,t1)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+       -1       objetivo
+       -1       cargaPersona(carlos)
+        1       z_def1(carlos,t1)
+        1       z_def2(carlos,t1)
+        1       z_def3(carlos,t1)
+
+z(carlos,t2)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+       -1       objetivo
+       -1       cargaPersona(carlos)
+        1       z_def1(carlos,t2)
+        1       z_def2(carlos,t2)
+        1       z_def3(carlos,t2)
+
+z(carlos,t3)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+       -1       objetivo
+       -1       cargaPersona(carlos)
+        1       z_def1(carlos,t3)
+        1       z_def2(carlos,t3)
+        1       z_def3(carlos,t3)
+
+REMAINING 57 ENTRIES SKIPPED
+
+---- obj  
+
+obj
+                (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
+        1       objetivo
+
+GAMS 50.1.0  12b75dde Jun 18, 2025          WEX-WEI x86 64bit/MS Windows - 08/07/25 23:06:23 Page 4
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Range Statistics    SOLVE asignacionScrum Using MIP From line 76
+
+
+RANGE STATISTICS (ABSOLUTE NON-ZERO FINITE VALUES)
+
+RHS       [min, max] : [ 1.000E+00, 1.044E+02] - Zero values observed as well
+Bound     [min, max] : [ 1.000E+00, 1.000E+00] - Zero values observed as well
+Matrix    [min, max] : [ 1.000E+00, 2.000E+01]
+
+GAMS 50.1.0  12b75dde Jun 18, 2025          WEX-WEI x86 64bit/MS Windows - 08/07/25 23:06:23 Page 5
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Model Statistics    SOLVE asignacionScrum Using MIP From line 76
+
+
+MODEL STATISTICS
+
+BLOCKS OF EQUATIONS          11     SINGLE EQUATIONS          229
+BLOCKS OF VARIABLES           6     SINGLE VARIABLES          210
+NON ZERO ELEMENTS           791     DISCRETE VARIABLES        132
+
+
+GENERATION TIME      =        0.094 SECONDS      4 MB  50.1.0 12b75dde WEX-WEI
+GAMS 50.1.0  12b75dde Jun 18, 2025          WEX-WEI x86 64bit/MS Windows - 08/07/25 23:06:23 Page 6
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Solution Report     SOLVE asignacionScrum Using MIP From line 76
+
+
+               S O L V E      S U M M A R Y
+
+     MODEL   asignacionScrum     OBJECTIVE  obj
+     TYPE    MIP                 DIRECTION  MAXIMIZE
+     SOLVER  CPLEX               FROM LINE  76
+
+**** SOLVER STATUS     1 Normal Completion
+**** MODEL STATUS      8 Integer Solution
+**** OBJECTIVE VALUE              104.0000
+
+ RESOURCE USAGE, LIMIT         13.547 10000000000.000
+ ITERATION COUNT, LIMIT   2469590    2147483647
+*** This solver runs with a demo license. No commercial use.
+--- GMO setup time: 0.00s
+--- GMO memory 0.55 Mb (peak 0.55 Mb)
+--- Dictionary memory 0.00 Mb
+--- Cplex 22.1.2.0 link memory 0.01 Mb (peak 0.03 Mb)
+--- Starting Cplex
+
+
+--- MIP status (102): integer optimal, tolerance.
+--- Cplex Time: 13.55sec (det. 9307.24 ticks)
+
+--- Returning a primal only solution to GAMS (marginals all set to NA).
+--- Fixing integer variables and solving final LP...
+
+
+--- Fixed MIP status (1): optimal.
+--- Cplex Time: 0.00sec (det. 0.20 ticks)
+
+
+Solution satisfies tolerances
+
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- EQU objetivo            .              .              .             1.0000      
+
+---- EQU unaPersonaPorTarea  
+
+           LOWER          LEVEL          UPPER         MARGINAL
+
+t1          1.0000         1.0000         1.0000          .          
+t2          1.0000         1.0000         1.0000          .          
+t3          1.0000         1.0000         1.0000          .          
+t4          1.0000         1.0000         1.0000          .          
+t5          1.0000         1.0000         1.0000          .          
+t6          1.0000         1.0000         1.0000          .          
+t7          1.0000         1.0000         1.0000          .          
+t8          1.0000         1.0000         1.0000          .          
+t9          1.0000         1.0000         1.0000          .          
+t10         1.0000         1.0000         1.0000          .          
+t11         1.0000         1.0000         1.0000          .          
+t12         1.0000         1.0000         1.0000          .          
+
+---- EQU cargaPersona  
+
+              LOWER          LEVEL          UPPER         MARGINAL
+
+carlos          .              .              .             EPS         
+ana             .              .              .             EPS         
+luis            .              .              .             EPS         
+sofia           .              .              .             EPS         
+denis           .              .              .             EPS         
+
+---- EQU cargaMinima  
+
+              LOWER          LEVEL          UPPER         MARGINAL
+
+carlos        18.0000        26.0000        +INF             .          
+ana           13.0000        16.0000        +INF             .          
+luis          13.0000        15.0000        +INF             .          
+sofia         18.0000        21.0000        +INF             .          
+denis         18.0000        26.0000        +INF             .          
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- EQU cargaMinE~        87.0000       104.0000        +INF             .          
+---- EQU cargaMaxE~        -INF          104.0000       104.4000          .          
+
+---- EQU tareaUnPeso  
+
+           LOWER          LEVEL          UPPER         MARGINAL
+
+t1          1.0000         1.0000         1.0000          .          
+t2          1.0000         1.0000         1.0000          .          
+t3          1.0000         1.0000         1.0000          .          
+t4          1.0000         1.0000         1.0000          .          
+t5          1.0000         1.0000         1.0000          .          
+t6          1.0000         1.0000         1.0000          .          
+t7          1.0000         1.0000         1.0000          .          
+t8          1.0000         1.0000         1.0000          .          
+t9          1.0000         1.0000         1.0000          .          
+t10         1.0000         1.0000         1.0000          .          
+t11         1.0000         1.0000         1.0000          .          
+t12         1.0000         1.0000         1.0000          .          
+
+---- EQU definicionPesoTarea  
+
+           LOWER          LEVEL          UPPER         MARGINAL
+
+t1           .              .              .             1.0000      
+t2           .              .              .             1.0000      
+t3           .              .              .             1.0000      
+t4           .              .              .             1.0000      
+t5           .              .              .             1.0000      
+t6           .              .              .             1.0000      
+t7           .              .              .             1.0000      
+t8           .              .              .             1.0000      
+t9           .              .              .             1.0000      
+t10          .              .              .             1.0000      
+t11          .              .              .             1.0000      
+t12          .              .              .             1.0000      
+
+---- EQU z_def1  
+
+                  LOWER          LEVEL          UPPER         MARGINAL
+
+carlos.t1         -INF             .              .             1.0000      
+carlos.t2         -INF             .              .             1.0000      
+carlos.t3         -INF          -13.0000          .              .          
+carlos.t4         -INF          -13.0000          .              .          
+carlos.t5         -INF           -2.0000          .              .          
+carlos.t6         -INF           -8.0000          .              .          
+carlos.t7         -INF           -8.0000          .              .          
+carlos.t8         -INF           -5.0000          .              .          
+carlos.t9         -INF           -2.0000          .              .          
+carlos.t10        -INF          -13.0000          .              .          
+carlos.t11        -INF           -1.0000          .              .          
+carlos.t12        -INF          -13.0000          .              .          
+ana   .t1         -INF          -13.0000          .              .          
+ana   .t2         -INF          -13.0000          .              .          
+ana   .t3         -INF          -13.0000          .              .          
+ana   .t4         -INF          -13.0000          .              .          
+ana   .t5         -INF             .              .             1.0000      
+ana   .t6         -INF           -8.0000          .              .          
+ana   .t7         -INF             .              .             1.0000      
+ana   .t8         -INF             .              .             1.0000      
+ana   .t9         -INF           -2.0000          .              .          
+ana   .t10        -INF          -13.0000          .              .          
+ana   .t11        -INF             .              .             1.0000      
+ana   .t12        -INF          -13.0000          .              .          
+luis  .t1         -INF          -13.0000          .              .          
+luis  .t2         -INF          -13.0000          .              .          
+luis  .t3         -INF          -13.0000          .              .          
+luis  .t4         -INF          -13.0000          .              .          
+luis  .t5         -INF           -2.0000          .              .          
+luis  .t6         -INF           -8.0000          .              .          
+luis  .t7         -INF           -8.0000          .              .          
+luis  .t8         -INF           -5.0000          .              .          
+luis  .t9         -INF             .              .             1.0000      
+luis  .t10        -INF             .              .             1.0000      
+luis  .t11        -INF           -1.0000          .              .          
+luis  .t12        -INF          -13.0000          .              .          
+sofia .t1         -INF          -13.0000          .              .          
+sofia .t2         -INF          -13.0000          .              .          
+sofia .t3         -INF          -13.0000          .              .          
+sofia .t4         -INF             .              .             1.0000      
+sofia .t5         -INF           -2.0000          .              .          
+sofia .t6         -INF             .              .             1.0000      
+sofia .t7         -INF           -8.0000          .              .          
+sofia .t8         -INF           -5.0000          .              .          
+sofia .t9         -INF           -2.0000          .              .          
+sofia .t10        -INF          -13.0000          .              .          
+sofia .t11        -INF           -1.0000          .              .          
+sofia .t12        -INF          -13.0000          .              .          
+denis .t1         -INF          -13.0000          .              .          
+denis .t2         -INF          -13.0000          .              .          
+denis .t3         -INF             .              .             1.0000      
+denis .t4         -INF          -13.0000          .              .          
+denis .t5         -INF           -2.0000          .              .          
+denis .t6         -INF           -8.0000          .              .          
+denis .t7         -INF           -8.0000          .              .          
+denis .t8         -INF           -5.0000          .              .          
+denis .t9         -INF           -2.0000          .              .          
+denis .t10        -INF          -13.0000          .              .          
+denis .t11        -INF           -1.0000          .              .          
+denis .t12        -INF             .              .             1.0000      
+
+---- EQU z_def2  
+
+                  LOWER          LEVEL          UPPER         MARGINAL
+
+carlos.t1         -INF           -7.0000          .              .          
+carlos.t2         -INF           -7.0000          .              .          
+carlos.t3         -INF             .              .             1.0000      
+carlos.t4         -INF             .              .             1.0000      
+carlos.t5         -INF             .              .             1.0000      
+carlos.t6         -INF             .              .             1.0000      
+carlos.t7         -INF             .              .             1.0000      
+carlos.t8         -INF             .              .             1.0000      
+carlos.t9         -INF             .              .             1.0000      
+carlos.t10        -INF             .              .             1.0000      
+carlos.t11        -INF             .              .             1.0000      
+carlos.t12        -INF             .              .             1.0000      
+ana   .t1         -INF             .              .             1.0000      
+ana   .t2         -INF             .              .             1.0000      
+ana   .t3         -INF             .              .             1.0000      
+ana   .t4         -INF             .              .             1.0000      
+ana   .t5         -INF          -18.0000          .              .          
+ana   .t6         -INF             .              .             1.0000      
+ana   .t7         -INF          -12.0000          .              .          
+ana   .t8         -INF          -15.0000          .              .          
+ana   .t9         -INF             .              .             1.0000      
+ana   .t10        -INF             .              .             1.0000      
+ana   .t11        -INF          -19.0000          .              .          
+ana   .t12        -INF             .              .             1.0000      
+luis  .t1         -INF             .              .             1.0000      
+luis  .t2         -INF             .              .             1.0000      
+luis  .t3         -INF             .              .             1.0000      
+luis  .t4         -INF             .              .             1.0000      
+luis  .t5         -INF             .              .             1.0000      
+luis  .t6         -INF             .              .             1.0000      
+luis  .t7         -INF             .              .             1.0000      
+luis  .t8         -INF             .              .             1.0000      
+luis  .t9         -INF          -18.0000          .              .          
+luis  .t10        -INF           -7.0000          .              .          
+luis  .t11        -INF             .              .             1.0000      
+luis  .t12        -INF             .              .             1.0000      
+sofia .t1         -INF             .              .             1.0000      
+sofia .t2         -INF             .              .             1.0000      
+sofia .t3         -INF             .              .             1.0000      
+sofia .t4         -INF           -7.0000          .              .          
+sofia .t5         -INF             .              .             1.0000      
+sofia .t6         -INF          -12.0000          .              .          
+sofia .t7         -INF             .              .             1.0000      
+sofia .t8         -INF             .              .             1.0000      
+sofia .t9         -INF             .              .             1.0000      
+sofia .t10        -INF             .              .             1.0000      
+sofia .t11        -INF             .              .             1.0000      
+sofia .t12        -INF             .              .             1.0000      
+denis .t1         -INF             .              .             1.0000      
+denis .t2         -INF             .              .             1.0000      
+denis .t3         -INF           -7.0000          .              .          
+denis .t4         -INF             .              .             1.0000      
+denis .t5         -INF             .              .             1.0000      
+denis .t6         -INF             .              .             1.0000      
+denis .t7         -INF             .              .             1.0000      
+denis .t8         -INF             .              .             1.0000      
+denis .t9         -INF             .              .             1.0000      
+denis .t10        -INF             .              .             1.0000      
+denis .t11        -INF             .              .             1.0000      
+denis .t12        -INF           -7.0000          .              .          
+
+---- EQU z_def3  
+
+                  LOWER          LEVEL          UPPER         MARGINAL
+
+carlos.t1        -20.0000       -20.0000        +INF             .          
+carlos.t2        -20.0000       -20.0000        +INF             .          
+carlos.t3        -20.0000       -13.0000        +INF             .          
+carlos.t4        -20.0000       -13.0000        +INF             .          
+carlos.t5        -20.0000        -2.0000        +INF             .          
+carlos.t6        -20.0000        -8.0000        +INF             .          
+carlos.t7        -20.0000        -8.0000        +INF             .          
+carlos.t8        -20.0000        -5.0000        +INF             .          
+carlos.t9        -20.0000        -2.0000        +INF             .          
+carlos.t10       -20.0000       -13.0000        +INF             .          
+carlos.t11       -20.0000        -1.0000        +INF             .          
+carlos.t12       -20.0000       -13.0000        +INF             .          
+ana   .t1        -20.0000       -13.0000        +INF             .          
+ana   .t2        -20.0000       -13.0000        +INF             .          
+ana   .t3        -20.0000       -13.0000        +INF             .          
+ana   .t4        -20.0000       -13.0000        +INF             .          
+ana   .t5        -20.0000       -20.0000        +INF             .          
+ana   .t6        -20.0000        -8.0000        +INF             .          
+ana   .t7        -20.0000       -20.0000        +INF             .          
+ana   .t8        -20.0000       -20.0000        +INF             .          
+ana   .t9        -20.0000        -2.0000        +INF             .          
+ana   .t10       -20.0000       -13.0000        +INF             .          
+ana   .t11       -20.0000       -20.0000        +INF             .          
+ana   .t12       -20.0000       -13.0000        +INF             .          
+luis  .t1        -20.0000       -13.0000        +INF             .          
+luis  .t2        -20.0000       -13.0000        +INF             .          
+luis  .t3        -20.0000       -13.0000        +INF             .          
+luis  .t4        -20.0000       -13.0000        +INF             .          
+luis  .t5        -20.0000        -2.0000        +INF             .          
+luis  .t6        -20.0000        -8.0000        +INF             .          
+luis  .t7        -20.0000        -8.0000        +INF             .          
+luis  .t8        -20.0000        -5.0000        +INF             .          
+luis  .t9        -20.0000       -20.0000        +INF             .          
+luis  .t10       -20.0000       -20.0000        +INF             .          
+luis  .t11       -20.0000        -1.0000        +INF             .          
+luis  .t12       -20.0000       -13.0000        +INF             .          
+sofia .t1        -20.0000       -13.0000        +INF             .          
+sofia .t2        -20.0000       -13.0000        +INF             .          
+sofia .t3        -20.0000       -13.0000        +INF             .          
+sofia .t4        -20.0000       -20.0000        +INF             .          
+sofia .t5        -20.0000        -2.0000        +INF             .          
+sofia .t6        -20.0000       -20.0000        +INF             .          
+sofia .t7        -20.0000        -8.0000        +INF             .          
+sofia .t8        -20.0000        -5.0000        +INF             .          
+sofia .t9        -20.0000        -2.0000        +INF             .          
+sofia .t10       -20.0000       -13.0000        +INF             .          
+sofia .t11       -20.0000        -1.0000        +INF             .          
+sofia .t12       -20.0000       -13.0000        +INF             .          
+denis .t1        -20.0000       -13.0000        +INF             .          
+denis .t2        -20.0000       -13.0000        +INF             .          
+denis .t3        -20.0000       -20.0000        +INF             .          
+denis .t4        -20.0000       -13.0000        +INF             .          
+denis .t5        -20.0000        -2.0000        +INF             .          
+denis .t6        -20.0000        -8.0000        +INF             .          
+denis .t7        -20.0000        -8.0000        +INF             .          
+denis .t8        -20.0000        -5.0000        +INF             .          
+denis .t9        -20.0000        -2.0000        +INF             .          
+denis .t10       -20.0000       -13.0000        +INF             .          
+denis .t11       -20.0000        -1.0000        +INF             .          
+denis .t12       -20.0000       -20.0000        +INF             .          
+
+---- VAR x  
+
+                  LOWER          LEVEL          UPPER         MARGINAL
+
+carlos.t1           .             1.0000         1.0000         EPS         
+carlos.t2           .             1.0000         1.0000         EPS         
+carlos.t3           .              .             1.0000        20.0000      
+carlos.t4           .              .             1.0000        20.0000      
+carlos.t5           .              .             1.0000        20.0000      
+carlos.t6           .              .             1.0000        20.0000      
+carlos.t7           .              .             1.0000        20.0000      
+carlos.t8           .              .             1.0000        20.0000      
+carlos.t9           .              .             1.0000        20.0000      
+carlos.t10          .              .             1.0000        20.0000      
+carlos.t11          .              .             1.0000        20.0000      
+carlos.t12          .              .             1.0000        20.0000      
+ana   .t1           .              .             1.0000        20.0000      
+ana   .t2           .              .             1.0000        20.0000      
+ana   .t3           .              .             1.0000        20.0000      
+ana   .t4           .              .             1.0000        20.0000      
+ana   .t5           .             1.0000         1.0000         EPS         
+ana   .t6           .              .             1.0000        20.0000      
+ana   .t7           .             1.0000         1.0000         EPS         
+ana   .t8           .             1.0000         1.0000         EPS         
+ana   .t9           .              .             1.0000        20.0000      
+ana   .t10          .              .             1.0000        20.0000      
+ana   .t11          .             1.0000         1.0000         EPS         
+ana   .t12          .              .             1.0000        20.0000      
+luis  .t1           .              .             1.0000        20.0000      
+luis  .t2           .              .             1.0000        20.0000      
+luis  .t3           .              .             1.0000        20.0000      
+luis  .t4           .              .             1.0000        20.0000      
+luis  .t5           .              .             1.0000        20.0000      
+luis  .t6           .              .             1.0000        20.0000      
+luis  .t7           .              .             1.0000        20.0000      
+luis  .t8           .              .             1.0000        20.0000      
+luis  .t9           .             1.0000         1.0000         EPS         
+luis  .t10          .             1.0000         1.0000         EPS         
+luis  .t11          .              .             1.0000        20.0000      
+luis  .t12          .              .             1.0000        20.0000      
+sofia .t1           .              .             1.0000        20.0000      
+sofia .t2           .              .             1.0000        20.0000      
+sofia .t3           .              .             1.0000        20.0000      
+sofia .t4           .             1.0000         1.0000         EPS         
+sofia .t5           .              .             1.0000        20.0000      
+sofia .t6           .             1.0000         1.0000         EPS         
+sofia .t7           .              .             1.0000        20.0000      
+sofia .t8           .              .             1.0000        20.0000      
+sofia .t9           .              .             1.0000        20.0000      
+sofia .t10          .              .             1.0000        20.0000      
+sofia .t11          .              .             1.0000        20.0000      
+sofia .t12          .              .             1.0000        20.0000      
+denis .t1           .              .             1.0000        20.0000      
+denis .t2           .              .             1.0000        20.0000      
+denis .t3           .             1.0000         1.0000         EPS         
+denis .t4           .              .             1.0000        20.0000      
+denis .t5           .              .             1.0000        20.0000      
+denis .t6           .              .             1.0000        20.0000      
+denis .t7           .              .             1.0000        20.0000      
+denis .t8           .              .             1.0000        20.0000      
+denis .t9           .              .             1.0000        20.0000      
+denis .t10          .              .             1.0000        20.0000      
+denis .t11          .              .             1.0000        20.0000      
+denis .t12          .             1.0000         1.0000         EPS         
+
+---- VAR y  
+
+              LOWER          LEVEL          UPPER         MARGINAL
+
+t1 .1           .              .             1.0000         1.0000      
+t1 .2           .              .             1.0000         2.0000      
+t1 .3           .              .             1.0000         3.0000      
+t1 .5           .              .             1.0000         5.0000      
+t1 .8           .              .             1.0000         8.0000      
+t1 .13          .             1.0000         1.0000        13.0000      
+t2 .1           .              .             1.0000         1.0000      
+t2 .2           .              .             1.0000         2.0000      
+t2 .3           .              .             1.0000         3.0000      
+t2 .5           .              .             1.0000         5.0000      
+t2 .8           .              .             1.0000         8.0000      
+t2 .13          .             1.0000         1.0000        13.0000      
+t3 .1           .              .             1.0000         1.0000      
+t3 .2           .              .             1.0000         2.0000      
+t3 .3           .              .             1.0000         3.0000      
+t3 .5           .              .             1.0000         5.0000      
+t3 .8           .              .             1.0000         8.0000      
+t3 .13          .             1.0000         1.0000        13.0000      
+t4 .1           .              .             1.0000         1.0000      
+t4 .2           .              .             1.0000         2.0000      
+t4 .3           .              .             1.0000         3.0000      
+t4 .5           .              .             1.0000         5.0000      
+t4 .8           .              .             1.0000         8.0000      
+t4 .13          .             1.0000         1.0000        13.0000      
+t5 .1           .              .             1.0000         1.0000      
+t5 .2           .             1.0000         1.0000         2.0000      
+t5 .3           .              .             1.0000         3.0000      
+t5 .5           .              .             1.0000         5.0000      
+t5 .8           .              .             1.0000         8.0000      
+t5 .13          .              .             1.0000        13.0000      
+t6 .1           .              .             1.0000         1.0000      
+t6 .2           .              .             1.0000         2.0000      
+t6 .3           .              .             1.0000         3.0000      
+t6 .5           .              .             1.0000         5.0000      
+t6 .8           .             1.0000         1.0000         8.0000      
+t6 .13          .              .             1.0000        13.0000      
+t7 .1           .              .             1.0000         1.0000      
+t7 .2           .              .             1.0000         2.0000      
+t7 .3           .              .             1.0000         3.0000      
+t7 .5           .              .             1.0000         5.0000      
+t7 .8           .             1.0000         1.0000         8.0000      
+t7 .13          .              .             1.0000        13.0000      
+t8 .1           .              .             1.0000         1.0000      
+t8 .2           .              .             1.0000         2.0000      
+t8 .3           .              .             1.0000         3.0000      
+t8 .5           .             1.0000         1.0000         5.0000      
+t8 .8           .              .             1.0000         8.0000      
+t8 .13          .              .             1.0000        13.0000      
+t9 .1           .              .             1.0000         1.0000      
+t9 .2           .             1.0000         1.0000         2.0000      
+t9 .3           .              .             1.0000         3.0000      
+t9 .5           .              .             1.0000         5.0000      
+t9 .8           .              .             1.0000         8.0000      
+t9 .13          .              .             1.0000        13.0000      
+t10.1           .              .             1.0000         1.0000      
+t10.2           .              .             1.0000         2.0000      
+t10.3           .              .             1.0000         3.0000      
+t10.5           .              .             1.0000         5.0000      
+t10.8           .              .             1.0000         8.0000      
+t10.13          .             1.0000         1.0000        13.0000      
+t11.1           .             1.0000         1.0000         1.0000      
+t11.2           .              .             1.0000         2.0000      
+t11.3           .              .             1.0000         3.0000      
+t11.5           .              .             1.0000         5.0000      
+t11.8           .              .             1.0000         8.0000      
+t11.13          .              .             1.0000        13.0000      
+t12.1           .              .             1.0000         1.0000      
+t12.2           .              .             1.0000         2.0000      
+t12.3           .              .             1.0000         3.0000      
+t12.5           .              .             1.0000         5.0000      
+t12.8           .              .             1.0000         8.0000      
+t12.13          .             1.0000         1.0000        13.0000      
+
+---- VAR carga  
+
+              LOWER          LEVEL          UPPER         MARGINAL
+
+carlos          .            26.0000        +INF             .          
+ana             .            16.0000        +INF             .          
+luis            .            15.0000        +INF             .          
+sofia           .            21.0000        +INF             .          
+denis           .            26.0000        +INF             .          
+
+---- VAR pt  
+
+           LOWER          LEVEL          UPPER         MARGINAL
+
+t1           .            13.0000        +INF             .          
+t2           .            13.0000        +INF             .          
+t3           .            13.0000        +INF             .          
+t4           .            13.0000        +INF             .          
+t5           .             2.0000        +INF             .          
+t6           .             8.0000        +INF             .          
+t7           .             8.0000        +INF             .          
+t8           .             5.0000        +INF             .          
+t9           .             2.0000        +INF             .          
+t10          .            13.0000        +INF             .          
+t11          .             1.0000        +INF             .          
+t12          .            13.0000        +INF             .          
+
+---- VAR z  
+
+                  LOWER          LEVEL          UPPER         MARGINAL
+
+carlos.t1           .            13.0000        +INF             .          
+carlos.t2           .            13.0000        +INF             .          
+carlos.t3           .              .            +INF             .          
+carlos.t4           .              .            +INF             .          
+carlos.t5           .              .            +INF             .          
+carlos.t6           .              .            +INF             .          
+carlos.t7           .              .            +INF             .          
+carlos.t8           .              .            +INF             .          
+carlos.t9           .              .            +INF             .          
+carlos.t10          .              .            +INF             .          
+carlos.t11          .              .            +INF             .          
+carlos.t12          .              .            +INF             .          
+ana   .t1           .              .            +INF             .          
+ana   .t2           .              .            +INF             .          
+ana   .t3           .              .            +INF             .          
+ana   .t4           .              .            +INF             .          
+ana   .t5           .             2.0000        +INF             .          
+ana   .t6           .              .            +INF             .          
+ana   .t7           .             8.0000        +INF             .          
+ana   .t8           .             5.0000        +INF             .          
+ana   .t9           .              .            +INF             .          
+ana   .t10          .              .            +INF             .          
+ana   .t11          .             1.0000        +INF             .          
+ana   .t12          .              .            +INF             .          
+luis  .t1           .              .            +INF             .          
+luis  .t2           .              .            +INF             .          
+luis  .t3           .              .            +INF             .          
+luis  .t4           .              .            +INF             .          
+luis  .t5           .              .            +INF             .          
+luis  .t6           .              .            +INF             .          
+luis  .t7           .              .            +INF             .          
+luis  .t8           .              .            +INF             .          
+luis  .t9           .             2.0000        +INF             .          
+luis  .t10          .            13.0000        +INF             .          
+luis  .t11          .              .            +INF             .          
+luis  .t12          .              .            +INF             .          
+sofia .t1           .              .            +INF             .          
+sofia .t2           .              .            +INF             .          
+sofia .t3           .              .            +INF             .          
+sofia .t4           .            13.0000        +INF             .          
+sofia .t5           .              .            +INF             .          
+sofia .t6           .             8.0000        +INF             .          
+sofia .t7           .              .            +INF             .          
+sofia .t8           .              .            +INF             .          
+sofia .t9           .              .            +INF             .          
+sofia .t10          .              .            +INF             .          
+sofia .t11          .              .            +INF             .          
+sofia .t12          .              .            +INF             .          
+denis .t1           .              .            +INF             .          
+denis .t2           .              .            +INF             .          
+denis .t3           .            13.0000        +INF             .          
+denis .t4           .              .            +INF             .          
+denis .t5           .              .            +INF             .          
+denis .t6           .              .            +INF             .          
+denis .t7           .              .            +INF             .          
+denis .t8           .              .            +INF             .          
+denis .t9           .              .            +INF             .          
+denis .t10          .              .            +INF             .          
+denis .t11          .              .            +INF             .          
+denis .t12          .            13.0000        +INF             .          
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- VAR obj               -INF          104.0000        +INF             .          
+
+
+**** REPORT SUMMARY :        0     NONOPT
+                             0 INFEASIBLE
+                             0  UNBOUNDED
+GAMS 50.1.0  12b75dde Jun 18, 2025          WEX-WEI x86 64bit/MS Windows - 08/07/25 23:06:23 Page 7
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+E x e c u t i o n
+
+
+----     78 VARIABLE x.L  
+
+                t1          t2          t3          t4          t5          t6          t7          t8          t9         t10         t11         t12
+
+carlos       1.000       1.000
+ana                                                          1.000                   1.000       1.000                               1.000
+luis                                                                                                         1.000       1.000
+sofia                                            1.000                   1.000
+denis                                1.000                                                                                                       1.000
+
+
+----     78 VARIABLE y.L  
+
+              1           2           5           8          13
+
+t1                                                        1.000
+t2                                                        1.000
+t3                                                        1.000
+t4                                                        1.000
+t5                    1.000
+t6                                            1.000
+t7                                            1.000
+t8                                1.000
+t9                    1.000
+t10                                                       1.000
+t11       1.000
+t12                                                       1.000
+
+
+----     78 VARIABLE carga.L  
+
+carlos 26.000,    ana    16.000,    luis   15.000,    sofia  21.000,    denis  26.000
+
+
+----     78 VARIABLE pt.L  
+
+t1  13.000,    t2  13.000,    t3  13.000,    t4  13.000,    t5   2.000,    t6   8.000,    t7   8.000,    t8   5.000,    t9   2.000,    t10 13.000,    t11  1.000,    t12 13.000
+
+
+----     78 VARIABLE z.L  
+
+                t1          t2          t3          t4          t5          t6          t7          t8          t9         t10         t11         t12
+
+carlos      13.000      13.000
+ana                                                          2.000                   8.000       5.000                               1.000
+luis                                                                                                         2.000      13.000
+sofia                                           13.000                   8.000
+denis                               13.000                                                                                                      13.000
+
+
+----     78 VARIABLE obj.L                 =      104.000  
+
+**** REPORT FILE SUMMARY
+
+tabla C:\Users\Denis\Desktop\PROGRA MATE I\Ivan\Proyecto\Proyecto GAMS\distribucion.txt
+
+
+EXECUTION TIME       =       13.829 SECONDS      5 MB  50.1.0 12b75dde WEX-WEI
+
+
+USER: GAMS Demo, for EULA and demo limitations see   G250531/0001CB-GEN
+      https://www.gams.com/latest/docs/UG%5FLicense.html         DC0000
+
+
+**** FILE SUMMARY
+
+Input      C:\Users\Denis\Desktop\PROGRA MATE I\Ivan\Proyecto\Proyecto GAMS\Modelo.gms
+Output     C:\Users\Denis\Desktop\PROGRA MATE I\Ivan\Proyecto\Proyecto GAMS\Modelo.lst
