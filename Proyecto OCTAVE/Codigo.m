@@ -35,7 +35,7 @@ for tt = 1:tareas
   end
   A = [A; row; -row];
   b = [b; 1; -1];
-  ctype = [ctype 'L' 'U'];
+  ctype = [ctype 'U' 'L'];  % Primero ≤1, luego ≥1
 end
 
 % 2) Carga mínima por persona
@@ -85,4 +85,3 @@ if status == 0
 else
   fprintf('No se encontró solución óptima. Status: %d\n', status);
 end
-
