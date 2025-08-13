@@ -1,4 +1,4 @@
-GAMS 50.1.0  12b75dde Jun 18, 2025          WEX-WEI x86 64bit/MS Windows - 08/09/25 01:14:10 Page 1
+GAMS 50.1.0  12b75dde Jun 18, 2025          WEX-WEI x86 64bit/MS Windows - 08/09/25 18:12:23 Page 1
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
@@ -24,89 +24,93 @@ C o m p i l a t i o n
   19      M /20/
   20      peso(t);
   21   
-  22  * Definición fija de pesos para cada tarea según tabla
-  23  peso('t1')  = 13;
-  24  peso('t2')  = 8;
-  25  peso('t3')  = 13;
-  26  peso('t4')  = 8;
-  27  peso('t5')  = 13;
-  28  peso('t6')  = 5;
-  29  peso('t7')  = 8;
-  30  peso('t8')  = 8;
-  31  peso('t9')  = 13;
-  32  peso('t10') = 3;
-  33  peso('t11') = 2;
-  34  peso('t12') = 2;
-  35   
-  36  * Asignamos pt(t) = peso fija para cada tarea
-  37  Equation
-  38      objetivo
-  39      unaPersonaPorTarea(t)
-  40      cargaPersona(p)
-  41      cargaMinima(p)
-  42      cargaMinEquipo
-  43      cargaMaxEquipo
-  44      definicionPesoTarea(t)
-  45      z_def1(p,t)
-  46      z_def2(p,t)
-  47      z_def3(p,t);
-  48   
-  49  objetivo..
-  50      obj =e= sum((p,t), z(p,t));
-  51   
-  52  unaPersonaPorTarea(t)..
-  53      sum(p, x(p,t)) =e= 1;
-  54   
-  55  definicionPesoTarea(t)..
-  56      pt(t) =e= peso(t);
-  57   
-  58  cargaPersona(p)..
-  59      carga(p) =e= sum(t, z(p,t));
-  60   
-  61  cargaMinima(p)..
-  62      carga(p) =g= 18 * esSenior(p) + 13 * (1 - esSenior(p));
-  63   
-  64  cargaMinEquipo..
-  65      sum(t, pt(t)) =g= 80;
-  66   
-  67  cargaMaxEquipo..
-  68      sum(t, pt(t)) =l= 96;
-  69   
-  70  z_def1(p,t)..
-  71      z(p,t) =l= pt(t);
-  72   
-  73  z_def2(p,t)..
-  74      z(p,t) =l= M * x(p,t);
-  75   
-  76  z_def3(p,t)..
-  77      z(p,t) =g= pt(t) - M * (1 - x(p,t));
-  78   
-  79  Model asignacionScrum /objetivo, unaPersonaPorTarea, cargaPersona, cargaMinima, cargaMinEquipo, cargaMaxEquipo, definicionPesoTarea, z_def1, z_def2, z_def3/;
-  80   
-  81  Solve asignacionScrum using mip maximizing obj;
+  22  * --- Definición de pesos según Caso A ---
+  23  Table pesoTabla(t,*)
+  24         valor
+  25      t1   13
+  26      t2    8
+  27      t3   13
+  28      t4    8
+  29      t5   13
+  30      t6    5
+  31      t7    8
+  32      t8    8
+  33      t9   13
+  34      t10   3
+  35      t11   2
+  36      t12   2;
+  37   
+  38  * Cargamos valores desde la tabla
+  39  peso(t) = pesoTabla(t,"valor");
+  40   
+  41  Equation
+  42      objetivo
+  43      unaPersonaPorTarea(t)
+  44      cargaPersona(p)
+  45      cargaMinima(p)
+  46      cargaMinEquipo
+  47      cargaMaxEquipo
+  48      definicionPesoTarea(t)
+  49      z_def1(p,t)
+  50      z_def2(p,t)
+  51      z_def3(p,t);
+  52   
+  53  objetivo..
+  54      obj =e= sum((p,t), z(p,t));
+  55   
+  56  unaPersonaPorTarea(t)..
+  57      sum(p, x(p,t)) =e= 1;
+  58   
+  59  definicionPesoTarea(t)..
+  60      pt(t) =e= peso(t);
+  61   
+  62  cargaPersona(p)..
+  63      carga(p) =e= sum(t, z(p,t));
+  64   
+  65  cargaMinima(p)..
+  66      carga(p) =g= 18 * esSenior(p) + 13 * (1 - esSenior(p));
+  67   
+  68  cargaMinEquipo..
+  69      sum(t, pt(t)) =g= 80;
+  70   
+  71  cargaMaxEquipo..
+  72      sum(t, pt(t)) =l= 96;
+  73   
+  74  z_def1(p,t)..
+  75      z(p,t) =l= pt(t);
+  76   
+  77  z_def2(p,t)..
+  78      z(p,t) =l= M * x(p,t);
+  79   
+  80  z_def3(p,t)..
+  81      z(p,t) =g= pt(t) - M * (1 - x(p,t));
   82   
-  83  Display x.l, carga.l, pt.l, z.l, obj.l;
+  83  Model asignacionScrum /all/;
   84   
-  85  file tabla /'distribucion.txt'/;
-  86  put tabla;
-  87  put 'Distribución de tareas por persona:' /;
-  88  put 'Persona':12, 'Tarea':8, 'Peso':6, 'Asignado':10 /;
-  89  loop((p,t),
-  90      if(x.l(p,t) = 1,
-  91          put p.tl:12, t.tl:8, peso(t):6:0, 'Sí':10 /;
-  92      );
-  93  );
-  94   
-  95  put / 'Carga total por persona:' /;
-  96  loop(p,
-  97      put p.tl:12, carga.l(p):8:2 /;
-  98  );
+  85  Solve asignacionScrum using mip maximizing obj;
+  86   
+  87  Display x.l, carga.l, pt.l, z.l, obj.l;
+  88   
+  89  file tabla /'distribucion.txt'/;
+  90  put tabla;
+  91  put 'Distribución de tareas por persona:' /;
+  92  put 'Persona':12, 'Tarea':8, 'Peso':6, 'Asignado':10 /;
+  93  loop((p,t),
+  94      if(x.l(p,t) = 1,
+  95          put p.tl:12, t.tl:8, peso(t):6:0, 'Sí':10 /;
+  96      );
+  97  );
+  98   
+  99  put / 'Carga total por persona:' /;
+ 100  loop(p,
+ 101      put p.tl:12, carga.l(p):8:2 /;
+ 102  );
 
 
 COMPILATION TIME     =        0.000 SECONDS      3 MB  50.1.0 12b75dde WEX-WEI
-GAMS 50.1.0  12b75dde Jun 18, 2025          WEX-WEI x86 64bit/MS Windows - 08/09/25 01:14:10 Page 2
+GAMS 50.1.0  12b75dde Jun 18, 2025          WEX-WEI x86 64bit/MS Windows - 08/09/25 18:12:23 Page 2
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
-Equation Listing    SOLVE asignacionScrum Using MIP From line 81
+Equation Listing    SOLVE asignacionScrum Using MIP From line 85
 
 
 ---- objetivo  =E=  
@@ -200,9 +204,9 @@ z_def3(carlos,t3)..  - 20*x(carlos,t3) - pt(t3) + z(carlos,t3) =G= -20 ; (LHS = 
      
 REMAINING 57 ENTRIES SKIPPED
 
-GAMS 50.1.0  12b75dde Jun 18, 2025          WEX-WEI x86 64bit/MS Windows - 08/09/25 01:14:10 Page 3
+GAMS 50.1.0  12b75dde Jun 18, 2025          WEX-WEI x86 64bit/MS Windows - 08/09/25 18:12:23 Page 3
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
-Column Listing      SOLVE asignacionScrum Using MIP From line 81
+Column Listing      SOLVE asignacionScrum Using MIP From line 85
 
 
 ---- x  
@@ -332,9 +336,9 @@ obj
                 (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
         1       objetivo
 
-GAMS 50.1.0  12b75dde Jun 18, 2025          WEX-WEI x86 64bit/MS Windows - 08/09/25 01:14:10 Page 4
+GAMS 50.1.0  12b75dde Jun 18, 2025          WEX-WEI x86 64bit/MS Windows - 08/09/25 18:12:23 Page 4
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
-Range Statistics    SOLVE asignacionScrum Using MIP From line 81
+Range Statistics    SOLVE asignacionScrum Using MIP From line 85
 
 
 RANGE STATISTICS (ABSOLUTE NON-ZERO FINITE VALUES)
@@ -343,9 +347,9 @@ RHS       [min, max] : [ 1.000E+00, 9.600E+01] - Zero values observed as well
 Bound     [min, max] : [ 1.000E+00, 1.000E+00] - Zero values observed as well
 Matrix    [min, max] : [ 1.000E+00, 2.000E+01]
 
-GAMS 50.1.0  12b75dde Jun 18, 2025          WEX-WEI x86 64bit/MS Windows - 08/09/25 01:14:10 Page 5
+GAMS 50.1.0  12b75dde Jun 18, 2025          WEX-WEI x86 64bit/MS Windows - 08/09/25 18:12:23 Page 5
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
-Model Statistics    SOLVE asignacionScrum Using MIP From line 81
+Model Statistics    SOLVE asignacionScrum Using MIP From line 85
 
 
 MODEL STATISTICS
@@ -355,23 +359,23 @@ BLOCKS OF VARIABLES           5     SINGLE VARIABLES          138
 NON ZERO ELEMENTS           647     DISCRETE VARIABLES         60
 
 
-GENERATION TIME      =        0.000 SECONDS      4 MB  50.1.0 12b75dde WEX-WEI
-GAMS 50.1.0  12b75dde Jun 18, 2025          WEX-WEI x86 64bit/MS Windows - 08/09/25 01:14:10 Page 6
+GENERATION TIME      =        0.016 SECONDS      4 MB  50.1.0 12b75dde WEX-WEI
+GAMS 50.1.0  12b75dde Jun 18, 2025          WEX-WEI x86 64bit/MS Windows - 08/09/25 18:12:23 Page 6
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
-Solution Report     SOLVE asignacionScrum Using MIP From line 81
+Solution Report     SOLVE asignacionScrum Using MIP From line 85
 
 
                S O L V E      S U M M A R Y
 
      MODEL   asignacionScrum     OBJECTIVE  obj
      TYPE    MIP                 DIRECTION  MAXIMIZE
-     SOLVER  CPLEX               FROM LINE  81
+     SOLVER  CPLEX               FROM LINE  85
 
 **** SOLVER STATUS     1 Normal Completion
 **** MODEL STATUS      1 Optimal
 **** OBJECTIVE VALUE               96.0000
 
- RESOURCE USAGE, LIMIT          0.000 10000000000.000
+ RESOURCE USAGE, LIMIT          0.016 10000000000.000
  ITERATION COUNT, LIMIT         1    2147483647
 *** This solver runs with a demo license. No commercial use.
 --- GMO setup time: 0.00s
@@ -382,7 +386,7 @@ Solution Report     SOLVE asignacionScrum Using MIP From line 81
 
 
 --- MIP status (101): integer optimal solution.
---- Cplex Time: 0.00sec (det. 0.64 ticks)
+--- Cplex Time: 0.02sec (det. 0.64 ticks)
 
 --- Returning a primal only solution to GAMS (marginals all set to NA).
 --- Fixing integer variables and solving final LP...
@@ -824,12 +828,12 @@ denis .t12          .             2.0000        +INF             .
 **** REPORT SUMMARY :        0     NONOPT
                              0 INFEASIBLE
                              0  UNBOUNDED
-GAMS 50.1.0  12b75dde Jun 18, 2025          WEX-WEI x86 64bit/MS Windows - 08/09/25 01:14:10 Page 7
+GAMS 50.1.0  12b75dde Jun 18, 2025          WEX-WEI x86 64bit/MS Windows - 08/09/25 18:12:23 Page 7
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-----     83 VARIABLE x.L  
+----     87 VARIABLE x.L  
 
                 t1          t2          t3          t4          t5          t6          t7          t8          t9         t10         t11         t12
 
@@ -840,17 +844,17 @@ sofia                                                                    1.000  
 denis                                                                                                        1.000       1.000       1.000       1.000
 
 
-----     83 VARIABLE carga.L  
+----     87 VARIABLE carga.L  
 
 carlos 21.000,    ana    13.000,    luis   21.000,    sofia  21.000,    denis  20.000
 
 
-----     83 VARIABLE pt.L  peso fijo de la tarea t
+----     87 VARIABLE pt.L  peso fijo de la tarea t
 
 t1  13.000,    t2   8.000,    t3  13.000,    t4   8.000,    t5  13.000,    t6   5.000,    t7   8.000,    t8   8.000,    t9  13.000,    t10  3.000,    t11  2.000,    t12  2.000
 
 
-----     83 VARIABLE z.L  
+----     87 VARIABLE z.L  
 
                 t1          t2          t3          t4          t5          t6          t7          t8          t9         t10         t11         t12
 
@@ -861,14 +865,14 @@ sofia                                                                    5.000  
 denis                                                                                                       13.000       3.000       2.000       2.000
 
 
-----     83 VARIABLE obj.L                 =       96.000  
+----     87 VARIABLE obj.L                 =       96.000  
 
 **** REPORT FILE SUMMARY
 
 tabla C:\Users\Denis\Desktop\PROGRA MATE I\Ivan\Proyecto\Proyecto GAMS\distribucion.txt
 
 
-EXECUTION TIME       =        0.046 SECONDS      5 MB  50.1.0 12b75dde WEX-WEI
+EXECUTION TIME       =        0.047 SECONDS      5 MB  50.1.0 12b75dde WEX-WEI
 
 
 USER: GAMS Demo, for EULA and demo limitations see   G250531/0001CB-GEN
@@ -877,5 +881,5 @@ USER: GAMS Demo, for EULA and demo limitations see   G250531/0001CB-GEN
 
 **** FILE SUMMARY
 
-Input      C:\Users\Denis\Desktop\PROGRA MATE I\Ivan\Proyecto\Proyecto GAMS\Modelo.gms
-Output     C:\Users\Denis\Desktop\PROGRA MATE I\Ivan\Proyecto\Proyecto GAMS\Modelo.lst
+Input      C:\Users\Denis\Desktop\PROGRA MATE I\Ivan\Proyecto\Proyecto GAMS\Experimento 2A.gms
+Output     C:\Users\Denis\Desktop\PROGRA MATE I\Ivan\Proyecto\Proyecto GAMS\Experimento 2A.lst

@@ -1,9 +1,8 @@
-
---- Job Experimento 2B.gms Start 08/09/25 18:45:29 50.1.0 12b75dde WEX-WEI x86 64bit/MS Windows
+--- Job Experimento 2A.gms Start 08/09/25 18:12:23 50.1.0 12b75dde WEX-WEI x86 64bit/MS Windows
 --- Applying:
     C:\GAMS\50\gmsprmNT.txt
 --- GAMS Parameters defined
-    Input "C:\Users\Denis\Desktop\PROGRA MATE I\Ivan\Proyecto\Proyecto GAMS\Experimento 2B.gms"
+    Input "C:\Users\Denis\Desktop\PROGRA MATE I\Ivan\Proyecto\Proyecto GAMS\Experimento 2A.gms"
     PageSize 0
     ScrDir "C:\Users\Denis\Desktop\PROGRA MATE I\Ivan\Proyecto\Proyecto GAMS\225a\"
     SysDir C:\GAMS\50\
@@ -20,28 +19,26 @@ Licensee: GAMS Demo, for EULA and demo limitations see   G250531/0001CB-GEN
 System information: 4 physical cores and 16 Gb physical memory detected
 GAMS 50.1.0   Copyright (C) 1987-2025 GAMS Development. All rights reserved
 --- Starting compilation
---- Experimento 2B.gms(105) 3 Mb
+--- Experimento 2A.gms(102) 3 Mb
 --- Starting execution: elapsed 0:00:00.005
---- Experimento 2B.gms(41) 4 Mb
---- Generating MIP model asignacionScrumB
---- Experimento 2B.gms(88) 4 Mb
----   319 rows  204 columns  939 non-zeroes
----   90 discrete-columns
+--- Experimento 2A.gms(39) 4 Mb
+--- Generating MIP model asignacionScrum
+--- Experimento 2A.gms(85) 4 Mb
+---   217 rows  138 columns  647 non-zeroes
+---   60 discrete-columns
 --- Range statistics (absolute non-zero finite values)
---- RHS       [min, max] : [ 1.000E+00, 1.460E+02] - Zero values observed as well
+--- RHS       [min, max] : [ 1.000E+00, 9.600E+01] - Zero values observed as well
 --- Bound     [min, max] : [ 1.000E+00, 1.000E+00] - Zero values observed as well
---- Matrix    [min, max] : [ 1.000E+00, 3.000E+01]
+--- Matrix    [min, max] : [ 1.000E+00, 2.000E+01]
 --- Executing CPLEX (Solvelink=2): elapsed 0:00:00.010
 
 IBM ILOG CPLEX   50.1.0 12b75dde Jun 18, 2025          WEI x86 64bit/MS Window
 
 *** This solver runs with a demo license. No commercial use.
 --- GMO setup time: 0.00s
---- Space for names approximately 0.01 Mb
---- Use option 'names no' to turn use of names off
---- GMO memory 0.56 Mb (peak 0.56 Mb)
+--- GMO memory 0.54 Mb (peak 0.54 Mb)
 --- Dictionary memory 0.00 Mb
---- Cplex 22.1.2.0 link memory 0.01 Mb (peak 0.03 Mb)
+--- Cplex 22.1.2.0 link memory 0.01 Mb (peak 0.02 Mb)
 --- Starting Cplex
 
 Version identifier: 22.1.2.0 | 2024-11-25 | 0edbb82fd
@@ -51,49 +48,49 @@ CPXPARAM_MIP_Pool_Capacity                       0
 CPXPARAM_MIP_Tolerances_AbsMIPGap                0
 Generic callback                                 0x50
 Tried aggregator 2 times.
-MIP Presolve eliminated 204 rows and 19 columns.
-MIP Presolve modified 270 coefficients.
-Aggregator did 90 substitutions.
-Reduced MIP has 24 rows, 95 columns, and 190 nonzeros.
-Reduced MIP has 90 binaries, 0 generals, 0 SOSs, and 0 indicators.
-Presolve time = 0.00 sec. (0.47 ticks)
-Found incumbent of value 142.000000 after 0.00 sec. (0.71 ticks)
-Probing time = 0.00 sec. (0.04 ticks)
+MIP Presolve eliminated 139 rows and 18 columns.
+MIP Presolve modified 180 coefficients.
+Aggregator did 60 substitutions.
+Reduced MIP has 17 rows, 60 columns, and 120 nonzeros.
+Reduced MIP has 60 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (0.31 ticks)
+Found incumbent of value 96.000000 after 0.00 sec. (0.35 ticks)
+Probing time = 0.00 sec. (0.03 ticks)
 Tried aggregator 1 time.
 Detecting symmetries...
-Reduced MIP has 24 rows, 95 columns, and 190 nonzeros.
-Reduced MIP has 90 binaries, 5 generals, 0 SOSs, and 0 indicators.
-Presolve time = 0.00 sec. (0.19 ticks)
-Probing time = 0.00 sec. (0.04 ticks)
-Clique table members: 18.
+Reduced MIP has 17 rows, 60 columns, and 120 nonzeros.
+Reduced MIP has 60 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (0.12 ticks)
+Probing time = 0.00 sec. (0.03 ticks)
+Clique table members: 12.
 MIP emphasis: balance optimality and feasibility.
 MIP search method: dynamic search.
 Parallel mode: deterministic, using up to 8 threads.
 Parallel mode: deterministic, using up to 2 threads for parallel tasks at root LP.
 Tried aggregator 1 time.
 No LP presolve or aggregator reductions.
-Presolve time = 0.00 sec. (0.03 ticks)
+Presolve time = 0.00 sec. (0.02 ticks)
 Initializing dual steep norms . . .
-Root relaxation solution time = 0.00 sec. (0.06 ticks)
+Root relaxation solution time = 0.00 sec. (0.04 ticks)
 
         Nodes                                         Cuts/
    Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
 
-*     0+    0                          142.0000      710.0000           400.00%
-Found incumbent of value 142.000000 after 0.00 sec. (1.18 ticks)
-      0     0        cutoff            142.0000                      1     --- 
+*     0+    0                           96.0000      480.0000           400.00%
+Found incumbent of value 96.000000 after 0.02 sec. (0.64 ticks)
+      0     0        cutoff             96.0000                      1     --- 
 
 Root node processing (before b&c):
-  Real time             =    0.00 sec. (1.19 ticks)
+  Real time             =    0.02 sec. (0.64 ticks)
 Parallel b&c, 8 threads:
   Real time             =    0.00 sec. (0.00 ticks)
   Sync time (average)   =    0.00 sec.
   Wait time (average)   =    0.00 sec.
                           ------------
-Total (root+branch&cut) =    0.00 sec. (1.19 ticks)
+Total (root+branch&cut) =    0.02 sec. (0.64 ticks)
 
 --- MIP status (101): integer optimal solution.
---- Cplex Time: 0.00sec (det. 1.19 ticks)
+--- Cplex Time: 0.02sec (det. 0.64 ticks)
 
 --- Returning a primal only solution to GAMS (marginals all set to NA).
 --- Fixing integer variables and solving final LP...
@@ -104,25 +101,25 @@ CPXPARAM_MIP_Display                             4
 CPXPARAM_MIP_Pool_Capacity                       0
 CPXPARAM_MIP_Tolerances_AbsMIPGap                0
 Tried aggregator 1 time.
-LP Presolve eliminated 318 rows and 204 columns.
+LP Presolve eliminated 216 rows and 138 columns.
 All rows and columns eliminated.
-Presolve time = 0.00 sec. (0.13 ticks)
+Presolve time = 0.00 sec. (0.09 ticks)
 
 --- Fixed MIP status (1): optimal.
---- Cplex Time: 0.00sec (det. 0.25 ticks)
+--- Cplex Time: 0.00sec (det. 0.17 ticks)
 
 
 Proven optimal solution
-MIP Solution:          142.000000    (1 iterations, 0 nodes)
-Final Solve:           142.000000    (0 iterations)
+MIP Solution:           96.000000    (1 iterations, 0 nodes)
+Final Solve:            96.000000    (0 iterations)
 
-Best possible:         142.000000
-Absolute gap:           -0.000000
-Relative gap:           -0.000000
+Best possible:          96.000000
+Absolute gap:            0.000000
+Relative gap:            0.000000
 
---- Reading solution for model asignacionScrumB
---- Executing after solve: elapsed 0:00:00.053
---- Experimento 2B.gms(103) 5 Mb
---- Putfile tabla C:\Users\Denis\Desktop\PROGRA MATE I\Ivan\Proyecto\Proyecto GAMS\distribucion_B.txt
+--- Reading solution for model asignacionScrum
+--- Executing after solve: elapsed 0:00:00.052
+--- Experimento 2A.gms(100) 5 Mb
+--- Putfile tabla C:\Users\Denis\Desktop\PROGRA MATE I\Ivan\Proyecto\Proyecto GAMS\distribucion.txt
 *** Status: Normal completion
---- Job Experimento 2B.gms Stop 08/09/25 18:45:29 elapsed 0:00:00.054
+--- Job Experimento 2A.gms Stop 08/09/25 18:12:23 elapsed 0:00:00.053

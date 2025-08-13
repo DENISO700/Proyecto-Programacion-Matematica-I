@@ -1,21 +1,21 @@
 Distribución de tareas por persona:
 Persona     Tarea   Peso  Asignado
-carlos      t1      13    Sí
-carlos      t2      13    Sí
-ana         t5      2     Sí
-ana         t7      8     Sí
-ana         t8      5     Sí
-ana         t11     1     Sí
-luis        t9      2     Sí
-luis        t10     13    Sí
-sofia       t4      13    Sí
-sofia       t6      8     Sí
-denis       t3      13    Sí
-denis       t12     13    Sí
+carlos      t1          13Sí
+carlos      t2           8Sí
+ana         t3          13Sí
+luis        t4           8Sí
+luis        t5          13Sí
+sofia       t6           5Sí
+sofia       t7           8Sí
+sofia       t8           8Sí
+denis       t9          13Sí
+denis       t10          3Sí
+denis       t11          2Sí
+denis       t12          2Sí
 
 Carga total por persona:
-carlos         26.00
-ana            16.00
-luis           15.00
+carlos         21.00
+ana            13.00
+luis           21.00
 sofia          21.00
-denis          26.00
+denis          20.00

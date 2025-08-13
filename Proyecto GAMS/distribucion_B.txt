@@ -1,0 +1,27 @@
+Distribución de tareas por persona (Caso B):
+Persona     Tarea   Peso  Asignado
+carlos      t4           5Sí
+carlos      t10          5Sí
+carlos      t13         13Sí
+carlos      t15          3Sí
+carlos      t18         13Sí
+ana         t6          13Sí
+ana         t14          2Sí
+ana         t16          5Sí
+luis        t11          8Sí
+luis        t12         13Sí
+sofia       t1          13Sí
+sofia       t2           2Sí
+sofia       t8           2Sí
+sofia       t9           3Sí
+sofia       t17          8Sí
+denis       t3          13Sí
+denis       t5           8Sí
+denis       t7          13Sí
+
+Carga total por persona:
+carlos         39.00
+ana            20.00
+luis           21.00
+sofia          28.00
+denis          34.00

@@ -19,21 +19,25 @@ Parameter
     M /20/
     peso(t);
 
-* Definición fija de pesos para cada tarea según tabla
-peso('t1')  = 13;
-peso('t2')  = 8;
-peso('t3')  = 13;
-peso('t4')  = 8;
-peso('t5')  = 13;
-peso('t6')  = 5;
-peso('t7')  = 8;
-peso('t8')  = 8;
-peso('t9')  = 13;
-peso('t10') = 3;
-peso('t11') = 2;
-peso('t12') = 2;
+* --- Definición de pesos según Caso A ---
+Table pesoTabla(t,*)
+       valor
+    t1   13
+    t2    8
+    t3   13
+    t4    8
+    t5   13
+    t6    5
+    t7    8
+    t8    8
+    t9   13
+    t10   3
+    t11   2
+    t12   2;
 
-* Asignamos pt(t) = peso fija para cada tarea
+* Cargamos valores desde la tabla
+peso(t) = pesoTabla(t,"valor");
+
 Equation
     objetivo
     unaPersonaPorTarea(t)
@@ -76,7 +80,7 @@ z_def2(p,t)..
 z_def3(p,t)..
     z(p,t) =g= pt(t) - M * (1 - x(p,t));
 
-Model asignacionScrum /objetivo, unaPersonaPorTarea, cargaPersona, cargaMinima, cargaMinEquipo, cargaMaxEquipo, definicionPesoTarea, z_def1, z_def2, z_def3/;
+Model asignacionScrum /all/;
 
 Solve asignacionScrum using mip maximizing obj;
 

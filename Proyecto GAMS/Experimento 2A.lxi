@@ -1,0 +1,42 @@
+B 3 C o m p i l a t i o n
+B 113 Equation Listing    SOLVE asignacionScrum Using MIP From line 85
+D 116 objetivo
+D 121 unaPersonaPorTarea
+D 132 cargaPersona
+D 143 cargaMinima
+D 154 cargaMinEquipo
+D 159 cargaMaxEquipo
+D 164 definicionPesoTarea
+D 175 z_def1
+D 186 z_def2
+D 197 z_def3
+B 209 Column Listing      SOLVE asignacionScrum Using MIP From line 85
+E 212 x
+E 234 carga
+E 253 pt
+E 305 z
+E 333 obj
+B 341 Range Statistics    SOLVE asignacionScrum Using MIP From line 85
+B 352 Model Statistics    SOLVE asignacionScrum Using MIP From line 85
+B 365 Solution Report     SOLVE asignacionScrum Using MIP From line 85
+F 410 objetivo
+F 412 unaPersonaPorTarea
+F 429 cargaPersona
+F 439 cargaMinima
+F 451 cargaMinEquipo
+F 452 cargaMaxEquipo
+F 454 definicionPesoTarea
+F 471 z_def1
+F 536 z_def2
+F 601 z_def3
+G 666 x
+G 731 carga
+G 741 pt
+G 758 z
+G 825 obj
+B 833 E x e c u t i o n
+I 833 x
+I 845 carga
+I 850 pt
+I 855 z
+I 867 obj
