@@ -65,7 +65,7 @@ ub = ones(n_vars,1);
 
 vartype = repmat('I',1,n_vars);  % enteras para binarias
 
-sense = 1; % minimizamos (-f para maximizar)
+sense = -1; % maximizar
 
 [xopt, fval, status] = glpk(f, A, b, lb, ub, ctype, vartype, sense);
 
@@ -85,4 +85,5 @@ if status == 0
 else
   fprintf('No se encontró solución óptima. Status: %d\n', status);
 end
+
 
