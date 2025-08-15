@@ -74,7 +74,7 @@ ub(idx_zmax:idx_zmin) = Inf;
 vartype = repmat('I',1,p*tareas);
 vartype = [vartype 'CC'];
 
-sense = 1; % minimizar
+sense = -1; % maximizar
 
 [xopt, fval, status] = glpk(f, A, b, lb, ub, ctype, vartype, sense);
 
@@ -105,3 +105,4 @@ if status == 0
 else
   fprintf('No se encontró solución óptima. Status: %d\n', status);
 end
+
