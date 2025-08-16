@@ -1,5 +1,4 @@
-# Proyecto-Programacion-Matematica-I
-# 📌 Optimización de Asignación de Tareas con el Método Simplex  
+# 📌 Optimización de la Asignación de Historias de Usuario en Equipos SCRUM mediante Programación Lineal
 
 ## 📖 Descripción del Proyecto  
 Este proyecto presenta la **optimización de un problema de programación lineal de tipo asignación**, utilizando el **Método Simplex**.  
