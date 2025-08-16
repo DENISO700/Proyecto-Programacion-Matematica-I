@@ -1,2 +1,38 @@
 # Proyecto-Programacion-Matematica-I
-En este trabajo se presenta la optimización de un problema de programación lineal de tipo asignación, utilizando el Método Simplex. La problemática abordada surge en el contexto de una entidad bancaria, donde se observan desafíos comunes en todos los equipos de trabajo organizados bajo el marco Scrum. El propósito principal es diseñar un modelo matemático que permita asignar de manera equilibrada las tareas a los desarrolladores, tomando en cuenta su experiencia y capacidades. Estas asignaciones se planifican dentro de los sprints del equipo, buscando maximizar la eficiencia operativa. A través de este enfoque, se pretende mejorar el rendimiento colectivo, mantener un flujo de trabajo continuo y asegurar que se cumplan las métricas de puntaje mínimo establecidas por la entidad. La implementación de este modelo no solo facilita una distribución justa de las tareas, sino que también contribuye a una mayor productividad y satisfacción dentro del equipo. Además, la aplicación del Método Simplex permite encontrar soluciones óptimas de forma sistemática, lo cual resulta clave en entornos colaborativos donde el tiempo y la calidad del desarrollo son factores críticos. En resumen, este proyecto combina herramientas de optimización con metodologías ágiles para enfrentar una situación real del entorno bancario, proponiendo una solución práctica y adaptable. 
+# 📌 Optimización de Asignación de Tareas con el Método Simplex  
+
+## 📖 Descripción del Proyecto  
+Este proyecto presenta la **optimización de un problema de programación lineal de tipo asignación**, utilizando el **Método Simplex**.  
+
+La problemática surge en el contexto de una **entidad bancaria**, donde se presentan desafíos comunes en equipos de trabajo organizados bajo el marco **Scrum**.  
+
+El objetivo principal es **diseñar un modelo matemático** que permita:  
+- Asignar tareas de manera equilibrada a los desarrolladores.  
+- Considerar la experiencia y capacidades individuales.  
+- Planificar dentro de los **sprints** del equipo.  
+- Maximizar la eficiencia operativa.  
+
+## 🎯 Objetivos
+- Mejorar el rendimiento colectivo.  
+- Mantener un flujo de trabajo continuo.  
+- Cumplir con las métricas de puntaje mínimo establecidas por la entidad.  
+- Lograr una **distribución justa de las tareas**.  
+- Incrementar la **productividad y satisfacción del equipo**.  
+
+## 🛠️ Metodología  
+- Uso de **programación lineal** para la modelación matemática.  
+- Aplicación del **Método Simplex** para encontrar soluciones óptimas.  
+- Integración con prácticas de **metodologías ágiles** (Scrum).  
+
+## 🚀 Beneficios
+- Distribución equitativa de tareas entre los desarrolladores.  
+- Mayor productividad en el equipo.  
+- Soluciones **sistemáticas y óptimas** en menor tiempo.  
+- Modelo adaptable a otros entornos colaborativos.  
+
+## 📊 Conclusión  
+Este proyecto combina herramientas de **optimización matemática** con **metodologías ágiles**, ofreciendo una **solución práctica y adaptable** a los retos de asignación de tareas en un entorno bancario.  
+
+---
+👨‍💻 Desarrollado como propuesta académica y aplicada a un escenario real.  
+
