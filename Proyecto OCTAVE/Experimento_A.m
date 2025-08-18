@@ -27,7 +27,7 @@ A = [];
 b = [];
 ctype = '';
 
-% 1) Cada tarea asignada a un solo desarrollador (igualdad traducida a dos desigualdades)
+% 1) Cada tarea asignada a un solo desarrollador
 for tt = 1:tareas
   row = zeros(1,n_vars);
   for pp = 1:p
@@ -85,5 +85,6 @@ if status == 0
 else
   fprintf('No se encontró solución óptima. Status: %d\n', status);
 end
+
 
 
