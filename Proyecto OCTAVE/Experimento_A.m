@@ -82,9 +82,19 @@ if status == 0
     end
     fprintf(' | Carga total = %.2f\n', carga_p);
   end
+
+    % --- Gráfico ---
+  figure;
+  bar(cargas, 'FaceColor', [0.2 0.6 0.8]);
+  set(gca, 'XTickLabel', personas);
+  xlabel('Personas');
+  ylabel('Carga total');
+  title('Distribución de carga por persona');
+  grid on;
 else
   fprintf('No se encontró solución óptima. Status: %d\n', status);
 end
+
 
 
 
